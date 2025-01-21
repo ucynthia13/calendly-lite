@@ -18,7 +18,7 @@ type Availability = {
     dayOfWeek: (typeof DAYS_OF_WEEK_IN_ORDER)[number]
 }
 
-export default function EventForm({ schedule }: { schedule?: { timezone: string, availabilities: Availability[] } }) {
+export default function ScheduleForm({ schedule }: { schedule?: { timezone: string, availabilities: Availability[] } }) {
     const [timezones, setTimezones] = useState<string[]>([]);
 
     useEffect(() => {
