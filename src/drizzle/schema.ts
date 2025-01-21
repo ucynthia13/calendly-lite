@@ -3,11 +3,12 @@ import { relations } from "drizzle-orm";
 import { pgTable, uuid, text, integer, boolean, timestamp, index, pgEnum } from "drizzle-orm/pg-core";
 const createdAt = timestamp("createdAt").notNull().defaultNow()
 const updatedAt = timestamp("updatedAt").notNull().defaultNow().$onUpdate(() => new Date())
+
 export const EventTable = pgTable("events", {
     id: uuid("id").primaryKey().defaultRandom(),
     name: text("name").notNull(),
     description: text("description"),
-    duration: integer("durationMinutes").notNull(),
+    duration: integer("duration").notNull(),
     clerkUserId: text("clerkUserId").notNull(),
     isActive: boolean("isActive").notNull().default(true),
     createdAt,

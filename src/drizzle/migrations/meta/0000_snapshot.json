@@ -1,5 +1,5 @@
 {
-  "id": "f4b1d1b2-96e3-499d-addd-84465edc9e4b",
+  "id": "f8059f0a-2dc7-4e18-a245-15cbc6a7101f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -27,8 +27,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "durationMinutes": {
-          "name": "durationMinutes",
+        "duration": {
+          "name": "duration",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
