@@ -14,7 +14,7 @@ export default async function EventEditPage({ params: { eventId } }: { params: {
     if(!event) return notFound()
 
     return(
-        <Card className="max-w-md">
+        <Card className="max-w-md mx-auto">
             <CardHeader>
                 <CardTitle>Edit Event</CardTitle>
             </CardHeader>

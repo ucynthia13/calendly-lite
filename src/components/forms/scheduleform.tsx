@@ -12,14 +12,16 @@ import { Switch } from "../ui/switch"
 import { createEvent, deleteEvent, updateEvent } from "@/server/actions/events"
 import { useTransition } from "react"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogTrigger, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription } from "../ui/alert-dialog"
-
-export default function EventForm({ event }: {
-    event?: {
-        id: string
-        name: string
-        description?: string
-        duration: number
-        isActive: boolean
+import { DAYS_OF_WEEK_IN_ORDER } from "@/data/constants"
+type Availability={
+    startTime: string,
+    endTime:string,
+    dayOfWeek: (typeof DAYS_OF_WEEK_IN_ORDER )[number]
+}
+export default function EventForm({ schedule }: {
+    schedule?: {
+        timezone: string,
+        availability: Availability[]
     }
 }) {
     const [isDeletePending, BeginDeleteTransition] = useTransition()
