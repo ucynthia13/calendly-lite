@@ -9,7 +9,7 @@ import { Button } from "../ui/button"
 import Link from "next/link"
 import { Fragment, useEffect, useState } from "react"
 import { DAYS_OF_WEEK_IN_ORDER } from "@/data/constants"
-import { formatTime, formatTimezone } from "@/lib/utils"
+import { formatTime, formatTimezone } from "@/lib/formatters"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Plus, X } from "lucide-react"
 import { Input } from "../ui/input"
@@ -72,7 +72,7 @@ export default function ScheduleForm({ schedule }: { schedule?: { timezone: stri
                     </div>
                 )}
                 {successMessage && (
-                    <div className="text-green-400 text-sm">
+                    <div className="text-green-400 text-sm border rounded-md p-2">
                         {successMessage}
                     </div>
                 )}
@@ -92,7 +92,7 @@ export default function ScheduleForm({ schedule }: { schedule?: { timezone: stri
                                     {timezones.map(timezone => (
                                         <SelectItem key={timezone} value={timezone}>
                                             {timezone}
-
+                                            {` `}
                                             {formatTimezone(timezone)}
                                         </SelectItem>
                                     ))}
@@ -107,12 +107,12 @@ export default function ScheduleForm({ schedule }: { schedule?: { timezone: stri
                     {DAYS_OF_WEEK_IN_ORDER.map(dayOfWeek => (
                         <Fragment key={dayOfWeek}>
                             <div className="capitalize text-sm font-semibold">
-                                {dayOfWeek.substring(0, 3)}
+                                {dayOfWeek}
                             </div>
-                            <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-4">
                                 <Button
                                     type="button"
-                                    className="size-6 p-1"
+                                    className="size-full px-4 opacity-80"
                                     variant="outline"
                                     onClick={() => {
                                         appendAvailability({
@@ -122,7 +122,8 @@ export default function ScheduleForm({ schedule }: { schedule?: { timezone: stri
                                         })
                                     }}
                                 >
-                                    <Plus className="size-full" />
+
+                                    Add schedule <Plus className="size-full" />
                                 </Button>
                                 {groupedAvailabilityFields[dayOfWeek]?.map(
                                     (field, labelIndex) => (
@@ -160,7 +161,7 @@ export default function ScheduleForm({ schedule }: { schedule?: { timezone: stri
                                                             </FormControl>
                                                         </FormItem>
                                                     )}
-                                                />
+                                                />  
                                                 <Button
                                                     type="button"
                                                     className="size-6 p-1"

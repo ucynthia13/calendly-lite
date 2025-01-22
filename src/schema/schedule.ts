@@ -1,5 +1,5 @@
 import { DAYS_OF_WEEK_IN_ORDER } from "@/data/constants"
-import { formatTime } from "@/lib/utils"
+import { formatTime } from "@/lib/formatters"
 import { z } from "zod"
 
 export const scheduleFormSchema = z.object({

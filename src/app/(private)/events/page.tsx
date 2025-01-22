@@ -65,7 +65,7 @@ function EventCard(
   {id, name, description, isActive, duration, clerkUserId} : EventCardProps
 ) {
   return (
-    <Card className="flex flex-col gap-2 ">
+    <Card className="flex flex-col gap-2">
       <CardHeader className={cn(!isActive && "opacity-50")}>
         <CardTitle>{name}</CardTitle>
       </CardHeader>
@@ -73,7 +73,7 @@ function EventCard(
         {formatDuration(duration)}
       </CardDescription>
       {description && (
-        <CardContent className={cn(!isActive && "opacity-50")}>
+        <CardContent className={cn("text-md",!isActive && "opacity-50")}>
           {description}
         </CardContent>
       )}
