@@ -1,4 +1,4 @@
-import { MeetingForm } from "@/components/forms/MeetingForm"
+import { MeetingForm } from "@/components/forms/meetingform"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { db } from "@/drizzle/db"
-import { getValidTimesFromSchedule } from "@/lib/getValidTimesFromSchedule"
+import { getValidTimesFromSchedule } from "@/lib/getValidScheduleFormatters"
 import { clerkClient } from "@clerk/nextjs/server"
 import {
   addMonths,
@@ -34,7 +34,7 @@ export default async function BookEventPage({
 
   if (event == null) return notFound()
 
-  const calendarUser = await clerkClient().users.getUser(clerkUserId)
+  const calendarUser = await (await clerkClient()).users.getUser(clerkUserId)
   const startDate = roundToNearestMinutes(new Date(), {
     nearestTo: 15,
     roundingMethod: "ceil",

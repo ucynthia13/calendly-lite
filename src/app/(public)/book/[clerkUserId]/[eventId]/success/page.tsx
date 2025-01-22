@@ -26,7 +26,7 @@ export default async function SuccessPage({
 
   if (event == null) notFound()
 
-  const calendarUser = await clerkClient().users.getUser(clerkUserId)
+  const calendarUser = await (await clerkClient()).users.getUser(clerkUserId)
   const startTimeDate = new Date(startTime)
 
   return (

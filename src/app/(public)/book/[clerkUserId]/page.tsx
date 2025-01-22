@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { db } from "@/drizzle/db"
-import { formatEventDescription } from "@/lib/formatters"
+import { formatDuration } from "@/lib/formatters"
 import { clerkClient } from "@clerk/nextjs/server"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -28,7 +28,7 @@ export default async function BookingPage({
 
   if (events.length === 0) return notFound()
 
-  const { fullName } = await clerkClient().users.getUser(clerkUserId)
+  const { fullName } = await (await clerkClient()).users.getUser(clerkUserId)
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -53,7 +53,7 @@ type EventCardProps = {
   name: string
   clerkUserId: string
   description: string | null
-  durationInMinutes: number
+  duration: number
 }
 
 function EventCard({
@@ -61,14 +61,14 @@ function EventCard({
   name,
   description,
   clerkUserId,
-  durationInMinutes,
+  duration,
 }: EventCardProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>
-          {formatEventDescription(durationInMinutes)}
+          {formatDuration(duration)}
         </CardDescription>
       </CardHeader>
       {description != null && <CardContent>{description}</CardContent>}
