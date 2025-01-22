@@ -3,7 +3,7 @@
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
-import { scheduleFormSchema } from "@/schema/schema"
+import { scheduleFormSchema } from "@/schema/schedule"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { Button } from "../ui/button"
 import Link from "next/link"
@@ -11,8 +11,9 @@ import { Fragment, useEffect, useState } from "react"
 import { DAYS_OF_WEEK_IN_ORDER } from "@/data/constants"
 import { formatTime, formatTimezone } from "@/lib/utils"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { Plus } from "lucide-react"
+import { Plus, X } from "lucide-react"
 import { Input } from "../ui/input"
+import { saveSchedule } from "@/server/actions/schedule"
 
 type Availability = {
     startTime: string,
@@ -21,11 +22,12 @@ type Availability = {
 }
 
 export default function ScheduleForm({ schedule }: { schedule?: { timezone: string, availabilities: Availability[] } }) {
-    const [timezones, setTimezones] = useState<string[]>([]);
+    const [timezones, setTimezones] = useState<string[]>([])
+    const [successMessage, setSuccessMessage] = useState<string>()
 
     useEffect(() => {
         const allTimezones = Intl.supportedValuesOf("timeZone")
-        setTimezones(allTimezones.slice(0, 5))
+        setTimezones(allTimezones)
     }, []);
 
     const form = useForm<z.infer<typeof scheduleFormSchema>>({
@@ -41,12 +43,21 @@ export default function ScheduleForm({ schedule }: { schedule?: { timezone: stri
         control: form.control
     })
 
-    const groupedAvailabilities = Object.groupBy(availabilityFields.map((availabilityField, index) => ({
+    const groupedAvailabilityFields = Object.groupBy(availabilityFields.map((availabilityField, index) => ({
         ...availabilityField, index
-    })), availability => availability.dayOfTheWeek
+    })), availability => availability.dayOfWeek
     )
     const onSubmit = async (values: z.infer<typeof scheduleFormSchema>) => {
-        console.log(values.timezone)
+        const data =  await saveSchedule(values)
+
+        if(data?.error){
+            form.setError("root", {
+                message: "Error Saving Schedule"
+            })
+        }else{
+            setSuccessMessage("Schedule Saved Successfully!")
+        }
+
     }
 
     return (
@@ -55,6 +66,16 @@ export default function ScheduleForm({ schedule }: { schedule?: { timezone: stri
                 <div className="text-destructive text-sm">{form.formState.errors.root.message}</div>
             )}
             <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-6">
+                {form.formState.errors.root && (
+                    <div className="text-destructive text-sm">
+                        {form.formState.errors.root.message}
+                    </div>
+                )}
+                {successMessage && (
+                    <div className="text-green-400 text-sm">
+                        {successMessage}
+                    </div>
+                )}
                 <FormField
                     control={form.control}
                     name="timezone"
@@ -71,7 +92,8 @@ export default function ScheduleForm({ schedule }: { schedule?: { timezone: stri
                                     {timezones.map(timezone => (
                                         <SelectItem key={timezone} value={timezone}>
                                             {timezone}
-                                            `${formatTimezone(timezone)}`
+
+                                            {formatTimezone(timezone)}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>
@@ -81,36 +103,97 @@ export default function ScheduleForm({ schedule }: { schedule?: { timezone: stri
                     )}
                 />
                 {/* Availabitilies */}
-                <div className="grid grid-cols-[auto, 1fr] gap-y-6">
+                <div className="grid grid-cols-[auto,1fr] gap-y-6 gap-x-4">
                     {DAYS_OF_WEEK_IN_ORDER.map(dayOfWeek => (
                         <Fragment key={dayOfWeek}>
-                            <div className="capitalize text-sm font-semibold">{dayOfWeek.substring(0, 3)}</div>
+                            <div className="capitalize text-sm font-semibold">
+                                {dayOfWeek.substring(0, 3)}
+                            </div>
                             <div className="flex flex-col gap-2">
-                                <Button type="button" className="size-6 p-1" variant="outline" onClick={() => { }}>
+                                <Button
+                                    type="button"
+                                    className="size-6 p-1"
+                                    variant="outline"
+                                    onClick={() => {
+                                        appendAvailability({
+                                            dayOfWeek,
+                                            startTime: "8:00",
+                                            endTime: "17:00",
+                                        })
+                                    }}
+                                >
                                     <Plus className="size-full" />
                                 </Button>
-                                {groupedAvailabilities[dayOfWeek]?.map((field, labelIndex) => (
-                                    <FormField
-                                        control={form.control}
-                                        name={`availabilities.${field.index}.startTime`}
-                                        render={({ field }) => (
-                                            <div className="flex flex-col gap-2">
-                                                <div className="flex gap-2 items-center">
-                                                    <FormItem>
-                                                        <FormLabel>Timezone</FormLabel>
-                                                        <FormControl>
-                                                            <Input className="w-24" aria-label={`${dayOfWeek} Start Time ${labelIndex} ${labelIndex + 1}`} {...field} />
-                                                        </FormControl>
-                                                        <FormDescription>Timezone users will see when booking</FormDescription>
-                                                    </FormItem>
-                                                </div>
-                                                <FormMessage>
-                                                    {form.formState.errors.availabilities?.at?.(field.id)?.root?.message}
-                                                </FormMessage>
+                                {groupedAvailabilityFields[dayOfWeek]?.map(
+                                    (field, labelIndex) => (
+                                        <div className="flex flex-col gap-1" key={field.id}>
+                                            <div className="flex gap-2 items-center">
+                                                <FormField
+                                                    control={form.control}
+                                                    name={`availabilities.${field.index}.startTime`}
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormControl>
+                                                                <Input
+                                                                    className="w-24"
+                                                                    aria-label={`${dayOfWeek} Start Time ${labelIndex + 1
+                                                                        }`}
+                                                                    {...field}
+                                                                />
+                                                            </FormControl>
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                -
+                                                <FormField
+                                                    control={form.control}
+                                                    name={`availabilities.${field.index}.endTime`}
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormControl>
+                                                                <Input
+                                                                    className="w-24"
+                                                                    aria-label={`${dayOfWeek} End Time ${labelIndex + 1
+                                                                        }`}
+                                                                    {...field}
+                                                                />
+                                                            </FormControl>
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <Button
+                                                    type="button"
+                                                    className="size-6 p-1"
+                                                    variant="destructiveGhost"
+                                                    onClick={() => removeAvailability(field.index)}
+                                                >
+                                                    <X />
+                                                </Button>
                                             </div>
-                                        )}
-                                    />
-                                ))}
+                                            <FormMessage>
+                                                {
+                                                    form.formState.errors.availabilities?.at?.(
+                                                        field.index
+                                                    )?.root?.message
+                                                }
+                                            </FormMessage>
+                                            <FormMessage>
+                                                {
+                                                    form.formState.errors.availabilities?.at?.(
+                                                        field.index
+                                                    )?.startTime?.message
+                                                }
+                                            </FormMessage>
+                                            <FormMessage>
+                                                {
+                                                    form.formState.errors.availabilities?.at?.(
+                                                        field.index
+                                                    )?.endTime?.message
+                                                }
+                                            </FormMessage>
+                                        </div>
+                                    )
+                                )}
                             </div>
                         </Fragment>
                     ))}
