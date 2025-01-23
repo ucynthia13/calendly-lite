@@ -32,7 +32,7 @@ export default async function BookingPage({
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="text-4xl md:text-5xl font-semibold mb-4 text-center">
+      <div className="text-xl md:text-3xl font-semibold mb-4 text-center">
         {fullName}
       </div>
       <div className="text-muted-foreground mb-6 max-w-sm mx-auto text-center">
@@ -64,7 +64,7 @@ function EventCard({
   duration,
 }: EventCardProps) {
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col rounded-md shadow-md border-secondary/50">
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>
