@@ -61,10 +61,10 @@ export default function PublicNav() {
           </button>
 
           <div className="grid justify-items-end gap-8">
-            {navigation.map((item) => {
+            {navigation.map((item, index) => {
               if (item.ctaButton) {
                 return (
-                  <Button className="bg-primary" asChild>
+                  <Button className="bg-primary" key={index} asChild>
                     <SignInButton />
                   </Button>
                 );
@@ -86,11 +86,11 @@ export default function PublicNav() {
 
         {/* Desktop Navigation */}
         <ul className="hidden gap-6 md:flex">
-          {navigation.map((item) => {
+          {navigation.map((item, index) => {
             if (item.ctaButton) {
               return (
-                <li key={item.label}>
-                 <Button>
+                <li key={item.label} key={index}>
+                 <Button className="bg-primary" asChild>
                   <SignInButton />
                  </Button>
                 </li>
