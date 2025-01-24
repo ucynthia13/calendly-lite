@@ -11,7 +11,7 @@ import { formatDuration } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 import { UserButton } from "@clerk/nextjs";
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { CalendarPlus, CalendarRange, LucideMailQuestion, MessageCircleQuestion, Settings, Trash2 } from "lucide-react";
+import { CalendarPlus, CalendarRange, MessageCircleQuestion, Settings} from "lucide-react";
 import Link from "next/link";
 
 export default async function EventsPage() {
