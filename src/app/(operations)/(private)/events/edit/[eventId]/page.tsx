@@ -1,21 +1,25 @@
-import EventForm from "@/components/forms/eventform"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { db } from "@/drizzle/db"
-import { auth } from "@clerk/nextjs/server"
-import { notFound } from "next/navigation"
+import EventForm from "@/components/forms/eventform";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { db } from "@/drizzle/db";
+import { auth } from "@clerk/nextjs/server";
+import { notFound } from "next/navigation";
 
-export const revalidate = 0
+export const revalidate = 0;
 
-export default async function EditEventPage({eventId} : { eventId: string}) {
-  const { userId, redirectToSignIn } = await auth()
-  if (userId == null) return redirectToSignIn()
+export default async function EditEventPage({
+  params,
+}: {
+  params: { eventId: string };
+}) {
+  const { userId, redirectToSignIn } = await auth();
+  if (userId == null) return redirectToSignIn();
 
   const event = await db.query.EventTable.findFirst({
     where: ({ id, clerkUserId }, { and, eq }) =>
-      and(eq(clerkUserId, userId), eq(id, eventId)),
-  })
+      and(eq(clerkUserId, userId), eq(id, params.eventId)),
+  });
 
-  if (event == null) return notFound()
+  if (event == null) return notFound();
 
   return (
     <Card className="max-w-md mx-auto">
@@ -28,5 +32,5 @@ export default async function EditEventPage({eventId} : { eventId: string}) {
         />
       </CardContent>
     </Card>
-  )
+  );
 }
