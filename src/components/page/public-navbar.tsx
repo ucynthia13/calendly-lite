@@ -88,7 +88,7 @@ export default function PublicNav() {
           {navigation.map((item, index) => {
             if (item.ctaButton) {
               return (
-                <li key={item.label} key={index}>
+                <li key={item.label} >
                  <Button className="bg-primary" asChild>
                   <SignInButton />
                  </Button>
