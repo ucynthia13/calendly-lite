@@ -65,7 +65,7 @@ export default async function EventsPage() {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-4 pt-8">
           <CalendarPlus className="size-16 mx-auto" />
           <p className="text-center">You have no events yet. Create your first event to get started!</p>
           <Button asChild>

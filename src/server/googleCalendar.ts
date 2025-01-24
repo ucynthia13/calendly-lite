@@ -31,14 +31,14 @@ export async function getCalendarEventTimes(
             events.data.items
                 ?.map(event => {
                     // Handle events with date or datetime fields
-                    if (event.start?.date != null && event.end?.date != null) {
+                    if (event.start?.date && event.end?.date) {
                         return {
                             start: startOfDay(event.start.date),
                             end: endOfDay(event.end.date),
                         };
                     }
 
-                    if (event.start?.dateTime != null && event.end?.dateTime != null) {
+                    if (event.start?.dateTime && event.end?.dateTime) {
                         return {
                             start: new Date(event.start.dateTime),
                             end: new Date(event.end.dateTime),
@@ -47,8 +47,9 @@ export async function getCalendarEventTimes(
                 })
                 .filter(date => date != null) || []
         );
-    } catch (error) {
-        console.error("Error fetching calendar events:", error);
+    } catch (error: any) {
+        console.error("Error fetching calendar events:", error.message);
+        console.error("Details:", error.response?.data || error);
         throw error; // Rethrow error for upstream handling
     }
 }
@@ -75,7 +76,7 @@ export async function createCalendarEvent({
         const oAuthClient = await getOAuthClient(clerkUserId);
         const calendarUser = await (await clerkClient()).users.getUser(clerkUserId);
 
-        if (calendarUser.primaryEmailAddress == null) {
+        if (!calendarUser.primaryEmailAddress) {
             throw new Error("Clerk user has no email");
         }
 
@@ -104,8 +105,9 @@ export async function createCalendarEvent({
         });
 
         return calendarEvent.data;
-    } catch (error) {
-        console.error("Error creating calendar event:", error);
+    } catch (error: any) {
+        console.error("Error creating calendar event:", error.message);
+        console.error("Details:", error.response?.data || error);
         throw error; // Rethrow error for upstream handling
     }
 }
@@ -135,6 +137,12 @@ async function getOAuthClient(clerkUserId: string) {
 
         // Set the token credentials
         client.setCredentials({ access_token: token });
+
+        // Check if the token is expiring and refresh if necessary
+        if (client.isTokenExpiring()) {
+            const refreshedTokens = await client.refreshAccessToken();
+            client.setCredentials(refreshedTokens.credentials);
+        }
 
         return client;
     } catch (error) {
