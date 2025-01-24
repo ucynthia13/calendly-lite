@@ -1,10 +1,5 @@
 import Hero from "@/components/page/page-hero";
 import PublicNav from "@/components/page/public-navbar";
-import { Button } from "@/components/ui/button";
-import {
-  SignInButton,
-  SignUpButton,
-} from "@clerk/nextjs"
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 

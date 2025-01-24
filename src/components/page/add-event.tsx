@@ -1,5 +1,5 @@
 import { CalendarRange } from "lucide-react";
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
 import EventForm from "../forms/eventform";
 
 export default function AddEvent() {

@@ -1,4 +1,3 @@
-import { Chrome, Github } from "lucide-react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import GoogleSVG from "../../../public/googleicon";

@@ -1,5 +1,5 @@
 import { PageSidebar } from "@/components/page/page-sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

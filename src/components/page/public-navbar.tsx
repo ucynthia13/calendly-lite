@@ -85,7 +85,7 @@ export default function PublicNav() {
 
         {/* Desktop Navigation */}
         <ul className="hidden gap-6 md:flex">
-          {navigation.map((item, index) => {
+          {navigation.map((item) => {
             if (item.ctaButton) {
               return (
                 <li key={item.label} >

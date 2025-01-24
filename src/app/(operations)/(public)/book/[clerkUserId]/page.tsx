@@ -16,7 +16,6 @@ import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Settings } from "lucide-react"
-import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 
 export const revalidate = 0

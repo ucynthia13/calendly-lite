@@ -1,5 +1,5 @@
 "use client";
-import { Calendar,CalendarRange, ChevronDown, ChevronUp, HomeIcon, Inbox, LucideIcon, Search, Settings, User2 } from "lucide-react";
+import { Calendar, ChevronDown, ChevronUp, HomeIcon, Inbox, LucideIcon, Search, Settings, User2 } from "lucide-react";
 
 import {
   Sidebar,

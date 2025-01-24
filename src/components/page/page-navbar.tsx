@@ -1,5 +1,4 @@
-import { CalendarRange, UserPlus } from "lucide-react";
-import NavLink from "../navbar";
+import { UserPlus } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 
 export default function Navbar() {

@@ -18,6 +18,7 @@ export default function CopyEventButton({
                 setCopyState("copied")
                 setTimeout(() => setCopyState("idle"), 2000)
             }).catch((err) => {
+                console.error(err)
                 setCopyState("idle")
                 setTimeout(() => setCopyState("idle"), 2000)
             })
