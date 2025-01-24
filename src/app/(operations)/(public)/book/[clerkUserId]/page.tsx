@@ -21,10 +21,11 @@ import { Switch } from "@/components/ui/switch";
 export const revalidate = 0
 
 export default async function BookingPage({
-  params: { clerkUserId },
+  params
 }: {
-  params: { clerkUserId: string }
+  params: Promise<{clerkUserId: string}>
 }) {
+  const { clerkUserId} = await params
   const events = await db.query.EventTable.findMany({
     where: ({ clerkUserId: userIdCol, isActive }, { eq, and }) =>
       and(eq(userIdCol, clerkUserId), eq(isActive, true)),

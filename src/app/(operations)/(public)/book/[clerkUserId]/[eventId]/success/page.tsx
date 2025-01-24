@@ -13,12 +13,14 @@ import { notFound } from "next/navigation"
 export const revalidate = 0
 
 export default async function SuccessPage({
-  params: { clerkUserId, eventId },
-  searchParams: { startTime },
+  params,
+  searchParams
 }: {
-  params: { clerkUserId: string; eventId: string }
-  searchParams: { startTime: string }
+  params: Promise<{clerkUserId: string, eventId: string}>
+  searchParams: Promise<{startTime: string}>
 }) {
+  const { clerkUserId, eventId} = await params
+  const { startTime } = await searchParams
   const event = await db.query.EventTable.findFirst({
     where: ({ clerkUserId: userIdCol, isActive, id }, { eq, and }) =>
       and(eq(isActive, true), eq(userIdCol, clerkUserId), eq(id, eventId)),
