@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { MdMenu, MdClose } from "react-icons/md";
 import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import { Button } from "../ui/button";
-import { SignInButton, SignUpButton } from "@clerk/nextjs";
-import { CalendarRange } from "lucide-react";
+import { SignInButton } from "@clerk/nextjs";
+import { CalendarRange, X, MenuIcon } from "lucide-react";
 
 export default function PublicNav() {
   const [open, setOpen] = useState(false);
@@ -38,7 +37,7 @@ export default function PublicNav() {
             aria-expanded={open}
             onClick={() => setOpen(true)}
           >
-            <MdMenu />
+            <MenuIcon />
             <span className="sr-only">Open menu</span>
           </button>
         </div>
@@ -56,7 +55,7 @@ export default function PublicNav() {
             aria-expanded={open}
             onClick={() => setOpen(false)}
           >
-            <MdClose />
+            <X />
             <span className="sr-only">Close menu</span>
           </button>
 
