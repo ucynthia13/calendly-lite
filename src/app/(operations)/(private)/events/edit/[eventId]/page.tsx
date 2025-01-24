@@ -4,11 +4,17 @@ import { db } from "@/drizzle/db";
 import { auth } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
 
-export default async function EventEditPage({ params: { eventId } }: { params: { eventId: string } }){
+interface PageProps{
+    params:{
+        eventId: string
+    }
+}
+
+export default async function EventEditPage({ params }: PageProps){
     const { userId, redirectToSignIn } = await auth()
     if(userId == null) return redirectToSignIn()
     const event = await db.query.EventTable.findFirst({
-        where: ({ id, clerkUserId}, {and, eq}) => and(eq(clerkUserId, userId), eq(id, eventId))
+        where: ({ id, clerkUserId}, {and, eq}) => and(eq(clerkUserId, userId), eq(id, params.eventId))
     })
 
     if(!event) return notFound()
