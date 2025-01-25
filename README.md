@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Calendly-like App
 
-## Getting Started
+A feature-rich scheduling application inspired by **Calendly**, designed to simplify scheduling meetings and events. This app utilizes **Neon** as the database for efficient and scalable data management.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **User Management**: Register, login, and manage user accounts (Credits to **Clerk** for the Simplified and Secure Auth).
+- **Event Scheduling**: Create, customize, and share events with invitees.
+- **Availability Management**: Set and manage availability to prevent conflicts.
+- **Automated Notifications**: Send reminders and notifications for scheduled events.
+- **Integration**: Sync with Google Calendar as for now.
+- **Customizable Time Zones**: Handle scheduling across multiple time zones.
+- **Secure Storage**: User credentials and sensitive data are securely stored.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠️ Tech Stack
 
-## Learn More
+- **Frontend**: Next.js with TailwindCSS for a modern and responsive UI.
+- **Backend**: 
+  - **Next.js** for API routes and server-side logic
+  - **Drizzle ORM** for database (Neon)
+  - **Zod** for schema validation
+  - **Google Calendar API** for event management
+  - **Date-fns-tz** for timezone handling
+- **Deployment**: Hosted on Vercel
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
+- Node.js (v16+)
+- Neon account for database setup
+- Clerk account for authentication purposes
 
-## Deploy on Vercel
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ucynthia13/calendly-like.git
+   cd calendly-like-app
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Install dependencies
+    npm install
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Set up the Neon database and add the connection string to **backend/.env**
+
+4. Start the app: 
+    npm start
+
